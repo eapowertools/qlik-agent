@@ -48,7 +48,8 @@ def invoke(payload):
     """AgentCore invoke — stateful via DynamoDB session store."""
     user_message = payload.get("prompt", DEFAULT_PROMPT)
     session_id = payload.get("session_id", "default")  # caller must provide this
-    if session_id == "default":
+    qlik_access_token = payload.get("qlik_access_token", "")
+    if not qlik_access_token:
         defaultAgent = Agent(model=AGENT_MODEL)
         result = defaultAgent(user_message)
         return {"result": result.message}
@@ -58,7 +59,7 @@ def invoke(payload):
 
     result_message = None
 
-    headers = {"Authorization": f"Bearer {session_id}"}
+    headers = {"Authorization": f"Bearer {qlik_access_token}"}
 
     qlik_client = MCPClient(
         lambda: streamable_http_client(
@@ -72,7 +73,7 @@ def invoke(payload):
         tools = qlik_client.list_tools_sync()
 
         agent = Agent(
-            model="us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+            model=AGENT_MODEL,
             tools=tools,
             # Inject prior history into the system prompt or messages —
             # depends on how your Agent class handles multi-turn context.
@@ -105,8 +106,7 @@ def invoke(payload):
         save_history(session_id, updated_history)
 
     return {
-        "result": result_message,
-        "session_id": session_id,  # echo back so client can reuse it
+        "result": result_message
     }
 
 if __name__ == "__main__":
