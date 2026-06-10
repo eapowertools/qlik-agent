@@ -19,7 +19,7 @@ jobs:
         run: |
           pip install -r requirements.txt --target .
 
-      - name: Build flat zip
+      - name: Build zip
         env:
           TAG: ${{ github.ref_name }}
         run: |
