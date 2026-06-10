@@ -22,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt --target .
+          pip install -r requirements.txt --target . --platform manylinux2014_aarch64 --python-version 3.13 --only-binary=:all:
 
       - name: Build Zip
         env:
