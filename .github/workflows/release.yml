@@ -19,7 +19,7 @@ jobs:
         env:
           TAG: ${{ github.ref_name }}
         run: |
-          zip -j "${TAG}.zip" ./*
+          zip -j "${TAG}.zip" main.py requirements.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
