@@ -12,7 +12,7 @@ QLIK_MCP_TENANT_URL = "https://presales-showcase.us.qlikcloud.com/api/ai/mcp"
 AGENT_MODEL = "global.anthropic.claude-haiku-4-5-20251001-v1:0"
 
 dynamodb = boto3.resource("dynamodb", region_name="us-east-1")
-TABLE_NAME = "agentcore-sessions"
+TABLE_NAME = "agentcore-sessions-eps"
 SESSION_TTL_SECONDS = 60 * 60 * 2  # 2 hours
 
 app = BedrockAgentCoreApp()
