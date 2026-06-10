@@ -19,11 +19,11 @@ jobs:
         run: |
           pip install -r requirements.txt --target .
 
-      - name: Build zip
+      - name: Build Zip
         env:
           TAG: ${{ github.ref_name }}
         run: |
-          zip -r "qlik-agent-${TAG}.zip" .
+          zip -r "qlik-agent-${TAG}.zip" . -x "*.git*" -x ".github/*"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
