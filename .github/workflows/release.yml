@@ -15,11 +15,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt --target .
+
       - name: Build flat zip
         env:
           TAG: ${{ github.ref_name }}
         run: |
-          zip -j "qlik-agent-${TAG}.zip" main.py requirements.txt
+          zip -r "qlik-agent-${TAG}.zip" .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
