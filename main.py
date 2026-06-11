@@ -1,4 +1,5 @@
 import boto3
+import httpx
 import json
 import time
 from bedrock_agentcore import BedrockAgentCoreApp
@@ -61,11 +62,16 @@ def invoke(payload):
 
     headers = {"Authorization": f"Bearer {qlik_access_token}"}
 
+    http_client = httpx.AsyncClient(
+        headers=headers,
+        timeout=httpx.Timeout(120),
+        follow_redirects=True,
+    )
+
     qlik_client = MCPClient(
         lambda: streamable_http_client(
-            QLIK_MCP_TENANT_URL,
-            headers=headers,
-            timeout=120,
+            url=QLIK_MCP_TENANT_URL,
+            http_client=http_client,
         )
     )
 
